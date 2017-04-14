@@ -22,8 +22,9 @@ class Main extends CI_Controller {
         $_SESSION["perfil"] = "Administrador";
         $funcion = $this->input->get('select');
 
-        if($funcion!='') {
+        if ($funcion != '') {
             $data['op'] = $funcion;
+            $this->load->view('base_main', $data);
         } else {
             $this->load->view('base_main');
         }
