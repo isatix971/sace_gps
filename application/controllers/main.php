@@ -17,16 +17,17 @@ class Main extends CI_Controller {
     }
 
     public function index() {
-
+        $_SESSION["login"] = "true";
+        $_SESSION["nombre"] = "Super User";
+        $_SESSION["perfil"] = "Administrador";
         $funcion = $this->input->get('select');
 
-//                    $data['resultado'] = $this->servicios_model_select->mostrarDatos($funcion);
-        $data['op'] = $funcion;
-        $this->load->view('base_main', $data);
-        
-         $_SESSION["login"] = "true";
-                    $_SESSION["nombre"] = "Super User";
-                    $_SESSION["perfil"] = "Administrador";
+        if($funcion!='') {
+            $data['op'] = $funcion;
+        } else {
+            $this->load->view('base_main');
+        }
+
 
 //        if (isset($_SESSION["login"])) {
 //
