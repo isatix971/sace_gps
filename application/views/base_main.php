@@ -20,6 +20,7 @@
         <?php
         echo $this->load->view('base_sidebarRight');
         ?>
+       
 
     </body>
 </html>
