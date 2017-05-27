@@ -15,6 +15,36 @@ class Main extends CI_Controller {
 
         $this->load->library('form_validation'); //validador de formulario, para usar set_value
     }
+    
+    /**
+     * Extendiendo el controlador para datos, que no tenga que construir HTML.
+     * http://192.81.211.131/sace_gps/index.php/main/data?que=coordenadas
+     */
+    public function data(){
+        $_SESSION["login"] = "true";
+        $_SESSION["nombre"] = "Super User";
+        $_SESSION["perfil"] = "Administrador";
+        
+        $quedata = $this->input->get('que');
+        
+        if($quedata == "coordenadas"){
+            $this->load->model('coordenadas_model');//cargo el modelo ver Coordenadas_model.php
+            
+            $data = $this->coordenadas_model->recuperarLastCoord();
+            
+            /* //comentada respuesta utilizando clase output
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($data));
+            //no está procesado el potencial error de mysql
+            $this->output->_display();
+             */ //probar a ver que tal
+            
+            echo json_encode($data); //a ver que responde
+        }
+        else{
+            echo "NO SABE BUSCAR NADA MÁS"; 
+        }
+    }
 
     public function index() {
         $_SESSION["login"] = "true";
