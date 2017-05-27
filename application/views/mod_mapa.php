@@ -8,10 +8,10 @@
                     <li><a href="#">Dashboard</a>
                     </li>
                     <li>Maps</li>
-                    <li class="active">Google Maps</li>
+                    <li class="active">GPS</li>
                 </ul>
                 <!--breadcrumbs end -->
-                <h1 class="h1">Google Maps</h1>
+                <h1 class="h1">Monitoreo GPS</h1>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Basic</h3>
+                        <h3 class="panel-title">Equipo rastreado</h3>
                         <div class="actions pull-right">
                             <i class="fa fa-chevron-down"></i>
                             <i class="fa fa-times"></i>
