@@ -34,6 +34,10 @@
 
     <script src="<?= base_url(); ?>content/js/jquery-ui.js"></script>
     <script src="<?= base_url(); ?>content/js/alertify.min.js"></script>
+    
+    <!-- el fakin angular -->
+    <script src="<?= base_url(); ?>content/js/angular.min.js"></script> <!-- 1.6.4  content-lab trae 1.5.8   --- IR A mod_mapa.php linea 37--> 
+
 
     <script src="<?= base_url(); ?>content-lab/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="<?= base_url(); ?>content-lab/assets/plugins/navgoco/jquery.navgoco.min.js"></script>
@@ -46,8 +50,8 @@
     <script src="<?= base_url(); ?>content-lab/assets/plugins/dataTables/js/dataTables.bootstrap.js"></script>
 
 
-    <script>
-        var map;
+    <script> <!-- TODO:  UNA FORMA PARA MANEJAR EL DIBUJO DE LOS PUNTOS EN EL MAPA ES HACER QUE ESTE SE INSTANCIE DENTRO DEL CONTROLADOR ANGULAR -->
+        var map; 
         function initMap() {
             var uluru = {lat: -25.363, lng: 131.044};
             var map = new google.maps.Map(document.getElementById('map'), {
