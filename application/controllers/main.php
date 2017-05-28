@@ -39,7 +39,8 @@ class Main extends CI_Controller {
             $this->output->_display();
              */ //probar a ver que tal
             
-            echo json_encode($data); //a ver que responde
+            //echo json_encode($data); //a ver que responde
+            return $data;
         }
         else{
             echo "NO SABE BUSCAR NADA MÁS"; 
