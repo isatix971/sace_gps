@@ -28,7 +28,7 @@ class Main extends CI_Controller {
         $quedata = $this->input->get('que');
         
         if($quedata == "coordenadas"){
-            $this->load->model('Coordenadas_model');//cargo el modelo ver Coordenadas_model.php
+            $this->load->model('coordenadas_model');//cargo el modelo ver Coordenadas_model.php
             
             $data = $this->coordenadas_model->recuperarLastCoord();
             
