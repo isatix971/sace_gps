@@ -40,7 +40,7 @@ class Main extends CI_Controller {
              */ //probar a ver que tal
             
             //echo json_encode($data); //a ver que responde
-            echo $data[0];
+            echo $data[0]['id'];
         }
         else{
             echo "NO SABE BUSCAR NADA MÁS"; 
