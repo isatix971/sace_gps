@@ -16,7 +16,7 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
         $http.get("http://192.81.211.131/sace_gps/index.php/main/data?que=coordenadas").then(//acceso al controlador que retorna las coordenadas //FAVOR VALIDAR EL DIRECCIONAMIENTO
                 function (response) {//exito
                     //actualiza la variable del scope coords, donde estarán las coordenadas del momento,
-                    $scope.coords = response.data.records; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
+                    $scope.coords = response.data; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
                     //falta que actualice el marcador del mapa
                     
                 },

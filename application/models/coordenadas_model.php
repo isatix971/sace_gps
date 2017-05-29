@@ -21,6 +21,7 @@ class Coordenadas_model extends CI_Model {
         $this->db->limit(1);
         $query = $this->db->get(); 
         $resultado = $query->row_array();
+        var_dump($resultado);
         if(isset($resultado)){
             return $resultado;
         }
