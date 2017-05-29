@@ -24,7 +24,8 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
         $scope.marcador = new google.maps.Marker({
           position: markerLATLONG,
           map: $scope.map,
-          title: extra
+          title: extra,
+          label: extra
         });
         
         $scope.map.setCenter(markerLATLONG);
@@ -40,7 +41,8 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                 function (response) {//exito
                     //actualiza la variable del scope coords, donde estarán las coordenadas del momento,
                     $scope.coords = response.data; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
-                    //falta que actualice el marcador del mapa
+                    
+                    //AQUI SE CONTRUYE EL MARCADOR, OJO CON EL AJUSTE A LAS COORDENADAS QUE SE HACE MANUALMENTE AQUI, SE DEBE HACER EN EL PHP.
                     $scope.ponerMarcador(Number($scope.coords.x)/100, Number($scope.coords.y)/100, $scope.coords.comentario);
                     
                 },
