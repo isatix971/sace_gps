@@ -8,6 +8,28 @@ var app = angular.module('saceGps', []);
  */
 app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
     
+    $scope.map = null; 
+    $scope.marcador = null;
+     
+    $scope.initMap = function() {
+        $scope.map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8
+        });
+    };
+    
+    $scope.ponerMarcador = function(lati, longi, extra){
+        var markerLATLONG = {lat: lati, lng: longi};
+        
+        $scope.marcador = new google.maps.Marker({
+          position: markerLATLONG,
+          map: $scope.map,
+          title: extra
+        });
+        
+        $scope.map.setCenter(markerLATLONG);
+        
+    };
+    
     /**
      * 
      * @returns Define la variable coords que será consumida en la vista.
@@ -18,6 +40,7 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                     //actualiza la variable del scope coords, donde estarán las coordenadas del momento,
                     $scope.coords = response.data; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
                     //falta que actualice el marcador del mapa
+                    $scope.ponerMarcador($scope.coords.x, $scope.coords.y, $scope.coords.comentario);
                     
                 },
                 function(response) {//la segunda funcion parametro de then maneja el error
@@ -25,9 +48,12 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                 }
                         );
     };
+    
+    
 
 
     //ejecución del controlador
+    $scope.initMap();
     
     /**
      * Define la llamada periodica a getCoords, en milisegundos
