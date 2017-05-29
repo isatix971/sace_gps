@@ -41,7 +41,7 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                     //actualiza la variable del scope coords, donde estarán las coordenadas del momento,
                     $scope.coords = response.data; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
                     //falta que actualice el marcador del mapa
-                    $scope.ponerMarcador(Number($scope.coords.x), Number($scope.coords.y), $scope.coords.comentario);
+                    $scope.ponerMarcador(Number($scope.coords.x/10), Number($scope.coords.y/10), $scope.coords.comentario);
                     
                 },
                 function(response) {//la segunda funcion parametro de then maneja el error
