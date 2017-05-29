@@ -49,16 +49,14 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                         );
     };
     
-    
+    $(document).ready(function() {
+        //ejecución del controlador
+        $scope.initMap();
 
-
-    //ejecución del controlador
-    $scope.initMap();
-    
-    /**
-     * Define la llamada periodica a getCoords, en milisegundos
-     * Guía: http://tutorials.jenkov.com/angularjs/timeout-interval.html
-     */
-    $interval( function(){ $scope.getCoords(); }, 1500);
-    
+        /**
+         * Define la llamada periodica a getCoords, en milisegundos
+         * Guía: http://tutorials.jenkov.com/angularjs/timeout-interval.html
+         */
+        $interval( function(){ $scope.getCoords(); }, 1500);
+    });
 });
