@@ -13,7 +13,8 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
      
     $scope.initMap = function() {
         $scope.map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 8
+            zoom: 8,
+            center:$scope.marcador
         });
     };
     
@@ -48,15 +49,14 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                 }
                         );
     };
-    
-    $(document).ready(function() {
-        //ejecución del controlador
-        $scope.initMap();
 
-        /**
-         * Define la llamada periodica a getCoords, en milisegundos
-         * Guía: http://tutorials.jenkov.com/angularjs/timeout-interval.html
-         */
-        $interval( function(){ $scope.getCoords(); }, 1500);
-    });
+    //ejecución del controlador
+    $scope.initMap();
+    
+    /**
+     * Define la llamada periodica a getCoords, en milisegundos
+     * Guía: http://tutorials.jenkov.com/angularjs/timeout-interval.html
+     */
+    $interval( function(){ $scope.getCoords(); }, 1500);
+    
 });
