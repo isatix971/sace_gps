@@ -40,12 +40,11 @@ class Main extends CI_Controller {
             $this->output->_display();
              */ //probar a ver que tal
             
-            //echo json_encode($data); //a ver que responde
-            var_dump($responsedata);
-            return $responsedata;
+            //var_dump($responsedata);
+            echo $responsedata;
         }
         else{
-            return "NO SABE BUSCAR NADA MÁS"; 
+            echo "NO SABE BUSCAR NADA MÁS"; 
         }
     }
 
