@@ -19,7 +19,7 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
     };
     
     $scope.ponerMarcador = function(lati, longi, extra){
-        var markerLATLONG = {lat: lati, lng: longi};
+        var markerLATLONG = {lat: -lati, lng: -longi};
         
         $scope.marcador = new google.maps.Marker({
           position: markerLATLONG,
