@@ -43,7 +43,7 @@ app.controller('CoordenadasCtrl', function($scope, $http, $interval) {
                     $scope.coords = response.data; //REVISAR SI ESTARAN O NO LLEGANDO LOS DATOS
                     
                     //AQUI SE CONTRUYE EL MARCADOR, OJO CON EL AJUSTE A LAS COORDENADAS QUE SE HACE MANUALMENTE AQUI, SE DEBE HACER EN EL PHP.
-                    $scope.ponerMarcador(Number($scope.coords.x)/100, Number($scope.coords.y)/100, $scope.coords.comentario);
+                    $scope.ponerMarcador(Number($scope.coords.x), Number($scope.coords.y), $scope.coords.comentario);
                     
                 },
                 function(response) {//la segunda funcion parametro de then maneja el error
