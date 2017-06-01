@@ -1,4 +1,5 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 
 class Coordenadas_model extends CI_Model {
     
@@ -19,8 +20,13 @@ class Coordenadas_model extends CI_Model {
         $this->db->order_by("id", "desc"); //no logré mirar la base de datos, así que no se si hay ID o algo. 
         $this->db->limit(1);
         $query = $this->db->get(); 
-        
-        return $query->result();
+        $resultado = $query->row_array();
+        if(isset($resultado)){
+            return $resultado;
+        }
+        else{
+            return "NO COORD 1";
+        }
     }
 }
 ?>

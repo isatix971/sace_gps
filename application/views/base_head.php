@@ -47,27 +47,10 @@
 
 
     <script src="<?= base_url(); ?>content-lab/assets/plugins/dataTables/js/jquery.dataTables.js"></script>
-    <script src="<?= base_url(); ?>content-lab/assets/plugins/dataTables/js/dataTables.bootstrap.js"></script>
+    <script src="<?= base_url(); ?>content-lab/assets/plugins/dataTables/js/dataTables.bootstrap.js"></script>   
 
 
-    <script> <!-- TODO:  UNA FORMA PARA MANEJAR EL DIBUJO DE LOS PUNTOS EN EL MAPA ES HACER QUE ESTE SE INSTANCIE DENTRO DEL CONTROLADOR ANGULAR -->
-        var map; 
-        function initMap() {
-            var uluru = {lat: -25.363, lng: 131.044};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 8,
-                center: uluru
-            });
-            var marker = new google.maps.Marker({
-                position: uluru,
-                map: map
-            });
-        }
-    </script>
-   
-
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5nT7tjeIBoqBCXzZeQ61105JxdRb7kSw&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5nT7tjeIBoqBCXzZeQ61105JxdRb7kSw&"
     async defer></script>
 
 

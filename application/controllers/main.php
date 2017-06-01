@@ -30,7 +30,8 @@ class Main extends CI_Controller {
         if($quedata == "coordenadas"){
             $this->load->model('coordenadas_model');//cargo el modelo ver Coordenadas_model.php
             
-            $data = $this->coordenadas_model->recuperarLastCoord();
+            $data = $this->coordenadas_model->recuperarLastCoord(); 
+            $responsedata = json_encode($data);
             
             /* //comentada respuesta utilizando clase output
             $this->output->set_content_type('application/json');
@@ -39,7 +40,8 @@ class Main extends CI_Controller {
             $this->output->_display();
              */ //probar a ver que tal
             
-            echo json_encode($data); //a ver que responde
+            //var_dump($responsedata);
+            echo $responsedata;
         }
         else{
             echo "NO SABE BUSCAR NADA MÁS"; 
