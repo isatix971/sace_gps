@@ -1,0 +1,888 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: cliente; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE cliente (
+    rut integer NOT NULL,
+    dv character(1) NOT NULL,
+    nombre_rzn_social text NOT NULL,
+    giro text,
+    telefono integer
+);
+
+
+ALTER TABLE public.cliente OWNER TO isatixor;
+
+--
+-- Name: TABLE cliente; Type: COMMENT; Schema: public; Owner: isatixor
+--
+
+COMMENT ON TABLE cliente IS 'almacena los datos de los clientes';
+
+
+--
+-- Name: COLUMN cliente.rut; Type: COMMENT; Schema: public; Owner: isatixor
+--
+
+COMMENT ON COLUMN cliente.rut IS 'rut del cliente';
+
+
+--
+-- Name: COLUMN cliente.dv; Type: COMMENT; Schema: public; Owner: isatixor
+--
+
+COMMENT ON COLUMN cliente.dv IS 'dígito verificador';
+
+
+--
+-- Name: COLUMN cliente.nombre_rzn_social; Type: COMMENT; Schema: public; Owner: isatixor
+--
+
+COMMENT ON COLUMN cliente.nombre_rzn_social IS 'nombre o razon social';
+
+
+--
+-- Name: contacto; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE contacto (
+    nombre text NOT NULL,
+    correo text,
+    contrasena text NOT NULL,
+    rut_cliente integer,
+    rut_contacto integer NOT NULL,
+    dv_contacto character(1) NOT NULL,
+    telefono integer
+);
+
+
+ALTER TABLE public.contacto OWNER TO isatixor;
+
+--
+-- Name: cotizacion; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE cotizacion (
+    id integer NOT NULL,
+    fecha_coti date NOT NULL,
+    fecha_vigencia date,
+    nombre_cliente text NOT NULL,
+    rut_cliente integer,
+    dv_cliente character(1),
+    correo text,
+    telefono text,
+    vigencia character varying(10) DEFAULT 'si'::character varying
+);
+
+
+ALTER TABLE public.cotizacion OWNER TO isatixor;
+
+--
+-- Name: cotizacion_cliente; Type: SEQUENCE; Schema: public; Owner: isatixor
+--
+
+CREATE SEQUENCE cotizacion_cliente
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cotizacion_cliente OWNER TO isatixor;
+
+--
+-- Name: cotizacion_cliente; Type: SEQUENCE SET; Schema: public; Owner: isatixor
+--
+
+SELECT pg_catalog.setval('cotizacion_cliente', 24, true);
+
+
+--
+-- Name: cotizacion_producto; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE cotizacion_producto (
+    id_cotizacion integer NOT NULL,
+    precio_unidad numeric(15,2) NOT NULL,
+    cantidad integer NOT NULL,
+    id_producto integer NOT NULL
+);
+
+
+ALTER TABLE public.cotizacion_producto OWNER TO isatixor;
+
+--
+-- Name: despacho; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE despacho (
+    id_pedido integer,
+    id_despachador integer
+);
+
+
+ALTER TABLE public.despacho OWNER TO isatixor;
+
+--
+-- Name: direccion; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE direccion (
+    rut_cliente integer NOT NULL,
+    calle text NOT NULL,
+    numero character varying,
+    casa_depto text,
+    comuna text,
+    ciudad text DEFAULT 'Melipilla'::text
+);
+
+
+ALTER TABLE public.direccion OWNER TO isatixor;
+
+--
+-- Name: pedido; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE pedido (
+    id integer NOT NULL,
+    rut_contacto_cliente integer,
+    fecha_pedido timestamp without time zone,
+    fecha_estimada timestamp without time zone,
+    fecha_entrega timestamp without time zone,
+    factura integer,
+    guia integer,
+    estado character varying
+);
+
+
+ALTER TABLE public.pedido OWNER TO isatixor;
+
+--
+-- Name: pedido_producto; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE pedido_producto (
+    id_pedido integer NOT NULL,
+    precio_unidad numeric(15,2) NOT NULL,
+    cantidad integer NOT NULL,
+    id_producto integer NOT NULL,
+    detalle character varying
+);
+
+
+ALTER TABLE public.pedido_producto OWNER TO isatixor;
+
+--
+-- Name: pedido_producto_cantidad_seq; Type: SEQUENCE; Schema: public; Owner: isatixor
+--
+
+CREATE SEQUENCE pedido_producto_cantidad_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pedido_producto_cantidad_seq OWNER TO isatixor;
+
+--
+-- Name: pedido_producto_cantidad_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: isatixor
+--
+
+ALTER SEQUENCE pedido_producto_cantidad_seq OWNED BY pedido_producto.cantidad;
+
+
+--
+-- Name: pedido_producto_cantidad_seq; Type: SEQUENCE SET; Schema: public; Owner: isatixor
+--
+
+SELECT pg_catalog.setval('pedido_producto_cantidad_seq', 1, false);
+
+
+--
+-- Name: pedido_seq; Type: SEQUENCE; Schema: public; Owner: isatixor
+--
+
+CREATE SEQUENCE pedido_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pedido_seq OWNER TO isatixor;
+
+--
+-- Name: pedido_seq; Type: SEQUENCE SET; Schema: public; Owner: isatixor
+--
+
+SELECT pg_catalog.setval('pedido_seq', 15, true);
+
+
+--
+-- Name: perfil; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE perfil (
+    id integer NOT NULL,
+    nombre character varying,
+    descripcion character varying
+);
+
+
+ALTER TABLE public.perfil OWNER TO isatixor;
+
+--
+-- Name: perfil_id_seq; Type: SEQUENCE; Schema: public; Owner: isatixor
+--
+
+CREATE SEQUENCE perfil_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.perfil_id_seq OWNER TO isatixor;
+
+--
+-- Name: perfil_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: isatixor
+--
+
+ALTER SEQUENCE perfil_id_seq OWNED BY perfil.id;
+
+
+--
+-- Name: perfil_id_seq; Type: SEQUENCE SET; Schema: public; Owner: isatixor
+--
+
+SELECT pg_catalog.setval('perfil_id_seq', 4, true);
+
+
+--
+-- Name: producto; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE producto (
+    id integer NOT NULL,
+    nombre text NOT NULL,
+    descripcion text
+);
+
+
+ALTER TABLE public.producto OWNER TO isatixor;
+
+--
+-- Name: solicitud_cotizacion; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE solicitud_cotizacion (
+    id integer NOT NULL,
+    nombre character varying,
+    correo character varying,
+    telefono character varying,
+    mensaje character varying,
+    fecha timestamp without time zone,
+    estado character varying
+);
+
+
+ALTER TABLE public.solicitud_cotizacion OWNER TO isatixor;
+
+--
+-- Name: telefono; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE telefono (
+    rut_cliente integer NOT NULL,
+    numero text NOT NULL,
+    tipo text
+);
+
+
+ALTER TABLE public.telefono OWNER TO isatixor;
+
+--
+-- Name: usuario; Type: TABLE; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+CREATE TABLE usuario (
+    id integer NOT NULL,
+    nombre character varying(100),
+    correo character varying(50),
+    clave character varying(50),
+    perfil character varying
+);
+
+
+ALTER TABLE public.usuario OWNER TO isatixor;
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: isatixor
+--
+
+CREATE SEQUENCE usuarios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.usuarios_id_seq OWNER TO isatixor;
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: isatixor
+--
+
+ALTER SEQUENCE usuarios_id_seq OWNED BY usuario.id;
+
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: isatixor
+--
+
+SELECT pg_catalog.setval('usuarios_id_seq', 2, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY perfil ALTER COLUMN id SET DEFAULT nextval('perfil_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuarios_id_seq'::regclass);
+
+
+--
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY cliente (rut, dv, nombre_rzn_social, giro, telefono) FROM stdin;
+16536391	4	francisco vergara	\N	\N
+345345	6	dhfgd	sdgfdsg	3465
+45545	6	sadf	rty	463
+2345	4	rrty	6435	45
+98	9	sjgfhj	khjkg	67
+9893	4	sjgfhj	khjkg	67
+5674	3	sjgfhj	khjkg	67
+234563	4	sdfgsdf	fdhfg	2345
+6457478	3	otro jk kjkl hlzdjfgh	dsfg	5456
+7474	7	palote	dksl	88888
+98437098	3	cliente	lkfjgk	980987
+74387	5	esto es otro	dfghfdgh	567567
+\.
+
+
+--
+-- Data for Name: contacto; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY contacto (nombre, correo, contrasena, rut_cliente, rut_contacto, dv_contacto, telefono) FROM stdin;
+fhdg	fdgh@fdg	contraseña	345345	4	5	4356
+dfghfd	fdgh@fdg	contraseña	45545	4563	5	3456
+3456	fdgh@fdg	contraseña	2345	546	5	76547
+56876	fdgh@fdg	contraseña	98	678	5	6785678
+56876	fdgh@fdg	contraseña	5674	789	6	6785678
+23ergds	sdg@sdfg	contraseña	234563	65	3	555
+sdgfdsf	sdfg@dg	contraseña	6457478	23423423	4	46356
+contacto	david@fldl	contraseña	98437098	34532	4	3564
+contacto nuevo	asdfß@df		16536391	43636456	5	3466
+ttttrrr	sdfg@dg	contraseña	16536391	76876	9	4574567
+lalala	david@fldl	contraseña	74387	45	6	67876
+contacto	sdfg@dg	contraseña	74387	56755	7	456546
+eeeeee	david@fldl	contraseña	234563	65746745	7	45745756
+\.
+
+
+--
+-- Data for Name: cotizacion; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY cotizacion (id, fecha_coti, fecha_vigencia, nombre_cliente, rut_cliente, dv_cliente, correo, telefono, vigencia) FROM stdin;
+1	2016-07-22	2016-07-22	ret	1	2	ergd	sdfg	si
+3	2016-07-25	2016-07-25	asdf	3	2	dg	asdf	si
+\.
+
+
+--
+-- Data for Name: cotizacion_producto; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY cotizacion_producto (id_cotizacion, precio_unidad, cantidad, id_producto) FROM stdin;
+\.
+
+
+--
+-- Data for Name: despacho; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY despacho (id_pedido, id_despachador) FROM stdin;
+2	1
+10	4
+14	4
+\.
+
+
+--
+-- Data for Name: direccion; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY direccion (rut_cliente, calle, numero, casa_depto, comuna, ciudad) FROM stdin;
+345345	hdfghd	45	45	dfgh	dfgh
+45545	456	456	456	fdhgfdh	fdhgfdh
+2345	dhf	455	45	4356	4356
+98	fghj	67	678	678	678
+5674	fghj	67	678	678	678
+234563					
+6457478	dsfg	34	345	bfdghfg	bfdghfg
+98437098	dlfgj	98	88	khdg	khdg
+74387	sdfg	34	67	sdfgsd	sdfgsd
+\.
+
+
+--
+-- Data for Name: pedido; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY pedido (id, rut_contacto_cliente, fecha_pedido, fecha_estimada, fecha_entrega, factura, guia, estado) FROM stdin;
+1	65	2016-08-08 16:29:41.604594	2016-10-08 00:00:00	\N	\N	\N	pendiente
+3	789	2016-08-08 16:48:12.161094	2016-08-18 00:00:00	\N	\N	\N	pendiente
+4	789	2016-08-08 17:33:27.052621	2016-08-31 00:00:00	\N	\N	\N	pendiente
+5	789	2016-08-08 17:51:06.042422	2016-08-31 00:00:00	\N	\N	\N	pendiente
+6	23423423	2016-08-08 17:54:49.70078	2016-08-30 00:00:00	\N	\N	\N	pendiente
+7	23423423	2016-08-08 17:55:10.691231	2016-08-21 00:00:00	\N	\N	\N	pendiente
+8	23423423	2016-08-10 19:02:36.212066	2016-08-27 00:00:00	\N	\N	\N	pendiente
+9	23423423	2016-08-10 19:06:16.90122	2016-08-27 00:00:00	\N	\N	\N	pendiente
+11	4563	2016-08-11 09:57:29.604929	2016-08-27 00:00:00	\N	\N	\N	pendiente
+12	65	2016-08-11 10:03:18.731993	2016-08-20 00:00:00	\N	\N	\N	pendiente
+13	678	2016-08-12 17:34:11.646086	2016-08-18 00:00:00	\N	\N	\N	pendiente
+15	76876	2016-08-17 16:52:48.743111	2016-08-21 00:00:00	\N	\N	\N	pendiente
+2	789	2016-08-08 16:41:43.011136	2016-10-08 00:00:00	\N	\N	\N	despacho
+10	23423423	2016-08-10 19:08:19.349469	2016-08-27 00:00:00	\N	\N	\N	despacho
+14	76876	2016-08-17 16:49:56.702351	2016-08-30 00:00:00	\N	\N	\N	despacho
+\.
+
+
+--
+-- Data for Name: pedido_producto; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY pedido_producto (id_pedido, precio_unidad, cantidad, id_producto, detalle) FROM stdin;
+2	2400.00	34	1	\N
+4	2400.00	45	1	\N
+6	2400.00	666	1	\N
+7	2400.00	56	1	\N
+2	150000.00	1	2	\N
+10	2400.00	43	1	 
+11	2400.00	34	1	 
+12	2400.00	4	1	 
+12	100000.00	4	2	arriendo
+13	2400.00	45	1	 
+13	100000.00	45	2	comodato
+14	2400.00	435	1	 
+14	100000.00	435	2	arriendo
+15	2400.00	45	1	 
+15	100000.00	45	2	comodato
+15	5000.00	234	3	 
+\.
+
+
+--
+-- Data for Name: perfil; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY perfil (id, nombre, descripcion) FROM stdin;
+1	administrador	administrador del sistema
+2	despachador	despachador de pedidos
+\.
+
+
+--
+-- Data for Name: producto; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY producto (id, nombre, descripcion) FROM stdin;
+2	Maquina FC	maquina frio calor
+3	Dispensador	dispensador de plastico
+1	Botellon 20	botellon retornable 20 litros de agua 
+\.
+
+
+--
+-- Data for Name: solicitud_cotizacion; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY solicitud_cotizacion (id, nombre, correo, telefono, mensaje, fecha, estado) FROM stdin;
+4	dg	francisco@isatix.org	r4	fhdgf\ndfh\nh	2016-07-25 16:09:52.447412	\N
+5	ffasdf	fcojvh@gmail.com	46	dfhfdgh	2016-07-25 16:32:20.522552	nok
+6	ffasdf	fcojvh@gmail.com	46	dfhfdgh	2016-07-25 16:32:56.295989	nok
+7	dg	francisco@isatix.org	r4	fhdgf\ndfh\nh	2016-07-25 16:41:13.212676	nok
+8	sdfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:43:51.742426	nok
+9	sdfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:44:52.936137	nok
+10	sdfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:45:25.331669	nok
+11	sdfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:45:58.555056	nok
+12	sdfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:46:46.788668	nok
+13	fdsfg	francisco@isatix.org	asdf	asfd	2016-07-25 19:47:51.820146	nok
+14	solicitud_cotizacion	francisco@isatix.org	sdg	sdgdsfsgf	2016-07-25 19:53:31.108115	nok
+15	hhfdgh	fcojvh@gmail.com	dfgh	dgh	2016-07-25 21:02:33.026533	nok
+16	gabriel cañas	gabrielcanas0490@gmail.com	9989718523	estimados :\nbuenas tardes , me interesaría , poder ser distribuidor de sus productos , ya que vivo en sona rural de melipilla , donde hoy en la actualidad se esta requiriendo mucho la necesidad de agua purificada \n\nme gustaría , que me dieran las opción de ser repartidor de agua y tener como otro ingreso familiar \n\nquedo atento a su comentario\n\ncordiales saludos \ngabriel cañas fabio \n	2016-08-01 17:53:59.110133	nok
+17	Claudia	claudiarojasparod@hotmail.com	82179746	Necesitó arrendar máquina para local 	2016-08-04 19:42:32.969043	nok
+18	Sara Zubicueta	sara.zubicueta@grupocraft.com	22802200	Favor nesesito cotizacion del arriendo de una maquina dispensadora de agua 	2016-08-05 19:05:09.491963	nok
+20	paula vergara	paula@dkdk.cl	88884443	quiero agua en botellones	2016-08-12 17:29:55.443815	nok
+21	claudia nuñez rojas	neo_2060@hotmail.com	996492510	necesito saber cuanto es el valor de la maquina dispensadora de agua fria y caliente, y como es el pago	2016-08-16 18:23:22.047746	nok
+22	juan pablo baez alfaro	jbaezalfaro@gmail.com	9968493959	Buenas tarde \nQuisiera saber el valor unitario de bidones de agua DE 20 litros, si uno compra mas de 100 unidades y ademas el valor de los dispensadores sobre 50 unidades\nespero respuesta	2016-08-17 19:30:51.603202	nok
+23	juan pablo baez alfaro	jbaezalfaro@gmail.com	9968493959	Buenas tarde \nQuisiera saber el valor unitario de bidones de agua DE 20 litros, si uno compra mas de 100 unidades y ademas el valor de los dispensadores sobre 50 unidades\nespero respuesta	2016-08-17 19:30:52.312166	nok
+24	Virginia Dato	virdatorobinson@hotmail.com	990470899	Solicito cotizacion de arirendo de dspensador frio caliente para casa partcular en Huechuraba	2016-08-25 21:30:10.093747	nok
+\.
+
+
+--
+-- Data for Name: telefono; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY telefono (rut_cliente, numero, tipo) FROM stdin;
+\.
+
+
+--
+-- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: isatixor
+--
+
+COPY usuario (id, nombre, correo, clave, perfil) FROM stdin;
+1	francisco vergara	francisco@isatix.org	lalola	1,2
+2	2			
+3	nuevo contacto	francisco@isatix.org		on,on,on
+4	yyyyyy	francisco@isatix.org	lalola	1,2,3
+\.
+
+
+--
+-- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (rut);
+
+
+--
+-- Name: contacto_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY contacto
+    ADD CONSTRAINT contacto_pkey PRIMARY KEY (rut_contacto);
+
+
+--
+-- Name: cotizacion_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY cotizacion
+    ADD CONSTRAINT cotizacion_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pedido_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY pedido
+    ADD CONSTRAINT pedido_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: producto_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY producto
+    ADD CONSTRAINT producto_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solicitud_cotizacion_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY solicitud_cotizacion
+    ADD CONSTRAINT solicitud_cotizacion_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: isatixor; Tablespace: 
+--
+
+ALTER TABLE ONLY usuario
+    ADD CONSTRAINT usuarios_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cotizacion_producto_id_cotizacion_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY cotizacion_producto
+    ADD CONSTRAINT cotizacion_producto_id_cotizacion_fkey FOREIGN KEY (id_cotizacion) REFERENCES cotizacion(id);
+
+
+--
+-- Name: cotizacion_producto_id_producto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY cotizacion_producto
+    ADD CONSTRAINT cotizacion_producto_id_producto_fkey FOREIGN KEY (id_producto) REFERENCES producto(id);
+
+
+--
+-- Name: direccion_rut_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY direccion
+    ADD CONSTRAINT direccion_rut_cliente_fkey FOREIGN KEY (rut_cliente) REFERENCES cliente(rut);
+
+
+--
+-- Name: pedido_producto_id_pedido_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY pedido_producto
+    ADD CONSTRAINT pedido_producto_id_pedido_fkey FOREIGN KEY (id_pedido) REFERENCES pedido(id);
+
+
+--
+-- Name: pedido_producto_id_producto_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY pedido_producto
+    ADD CONSTRAINT pedido_producto_id_producto_fkey FOREIGN KEY (id_producto) REFERENCES producto(id);
+
+
+--
+-- Name: pedido_rut_contacto_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY pedido
+    ADD CONSTRAINT pedido_rut_contacto_cliente_fkey FOREIGN KEY (rut_contacto_cliente) REFERENCES contacto(rut_contacto);
+
+
+--
+-- Name: rut_cliente_clave; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY contacto
+    ADD CONSTRAINT rut_cliente_clave FOREIGN KEY (rut_cliente) REFERENCES cliente(rut);
+
+
+--
+-- Name: telefono_rut_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: isatixor
+--
+
+ALTER TABLE ONLY telefono
+    ADD CONSTRAINT telefono_rut_cliente_fkey FOREIGN KEY (rut_cliente) REFERENCES cliente(rut);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: cliente; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE cliente FROM PUBLIC;
+REVOKE ALL ON TABLE cliente FROM isatixor;
+GRANT ALL ON TABLE cliente TO isatixor;
+GRANT ALL ON TABLE cliente TO isatixor_gestionprana;
+
+
+--
+-- Name: contacto; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE contacto FROM PUBLIC;
+REVOKE ALL ON TABLE contacto FROM isatixor;
+GRANT ALL ON TABLE contacto TO isatixor;
+GRANT ALL ON TABLE contacto TO isatixor_gestionprana;
+
+
+--
+-- Name: cotizacion; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE cotizacion FROM PUBLIC;
+REVOKE ALL ON TABLE cotizacion FROM isatixor;
+GRANT ALL ON TABLE cotizacion TO isatixor;
+GRANT ALL ON TABLE cotizacion TO isatixor_gestionprana;
+
+
+--
+-- Name: cotizacion_cliente; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON SEQUENCE cotizacion_cliente FROM PUBLIC;
+REVOKE ALL ON SEQUENCE cotizacion_cliente FROM isatixor;
+GRANT ALL ON SEQUENCE cotizacion_cliente TO isatixor;
+GRANT ALL ON SEQUENCE cotizacion_cliente TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: cotizacion_producto; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE cotizacion_producto FROM PUBLIC;
+REVOKE ALL ON TABLE cotizacion_producto FROM isatixor;
+GRANT ALL ON TABLE cotizacion_producto TO isatixor;
+GRANT ALL ON TABLE cotizacion_producto TO isatixor_gestionprana;
+
+
+--
+-- Name: despacho; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE despacho FROM PUBLIC;
+REVOKE ALL ON TABLE despacho FROM isatixor;
+GRANT ALL ON TABLE despacho TO isatixor;
+GRANT ALL ON TABLE despacho TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: direccion; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE direccion FROM PUBLIC;
+REVOKE ALL ON TABLE direccion FROM isatixor;
+GRANT ALL ON TABLE direccion TO isatixor;
+GRANT ALL ON TABLE direccion TO isatixor_gestionprana;
+
+
+--
+-- Name: pedido; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE pedido FROM PUBLIC;
+REVOKE ALL ON TABLE pedido FROM isatixor;
+GRANT ALL ON TABLE pedido TO isatixor;
+GRANT ALL ON TABLE pedido TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: pedido.id; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL(id) ON TABLE pedido FROM PUBLIC;
+REVOKE ALL(id) ON TABLE pedido FROM isatixor;
+GRANT ALL(id) ON TABLE pedido TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: pedido_producto; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE pedido_producto FROM PUBLIC;
+REVOKE ALL ON TABLE pedido_producto FROM isatixor;
+GRANT ALL ON TABLE pedido_producto TO isatixor;
+GRANT ALL ON TABLE pedido_producto TO isatixor_gestionprana;
+
+
+--
+-- Name: pedido_seq; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON SEQUENCE pedido_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE pedido_seq FROM isatixor;
+GRANT ALL ON SEQUENCE pedido_seq TO isatixor;
+GRANT ALL ON SEQUENCE pedido_seq TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: perfil; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE perfil FROM PUBLIC;
+REVOKE ALL ON TABLE perfil FROM isatixor;
+GRANT ALL ON TABLE perfil TO isatixor;
+GRANT ALL ON TABLE perfil TO isatixor_gestionprana;
+
+
+--
+-- Name: perfil_id_seq; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON SEQUENCE perfil_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE perfil_id_seq FROM isatixor;
+GRANT ALL ON SEQUENCE perfil_id_seq TO isatixor;
+GRANT ALL ON SEQUENCE perfil_id_seq TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: producto; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE producto FROM PUBLIC;
+REVOKE ALL ON TABLE producto FROM isatixor;
+GRANT ALL ON TABLE producto TO isatixor;
+GRANT ALL ON TABLE producto TO isatixor_gestionprana;
+
+
+--
+-- Name: solicitud_cotizacion; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE solicitud_cotizacion FROM PUBLIC;
+REVOKE ALL ON TABLE solicitud_cotizacion FROM isatixor;
+GRANT ALL ON TABLE solicitud_cotizacion TO isatixor;
+GRANT ALL ON TABLE solicitud_cotizacion TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- Name: telefono; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE telefono FROM PUBLIC;
+REVOKE ALL ON TABLE telefono FROM isatixor;
+GRANT ALL ON TABLE telefono TO isatixor;
+GRANT ALL ON TABLE telefono TO isatixor_gestionprana;
+
+
+--
+-- Name: usuario; Type: ACL; Schema: public; Owner: isatixor
+--
+
+REVOKE ALL ON TABLE usuario FROM PUBLIC;
+REVOKE ALL ON TABLE usuario FROM isatixor;
+GRANT ALL ON TABLE usuario TO isatixor;
+GRANT ALL ON TABLE usuario TO isatixor_gestionprana WITH GRANT OPTION;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
